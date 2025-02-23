@@ -1,0 +1,99 @@
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def introduce(self):
+        print(f"My name is {self.name} and I am {self.age} years old.")
+
+
+class Employee(Person):
+    def __init__(self, name, age, position):
+        super().__init__(name, age)
+        self.position = position
+
+    def work(self):
+        print(f"{self.name} is working as a {self.position}.")
+
+
+class Student(Person):
+    def __init__(self, name, age, student_id):
+        super().__init__(name, age)
+        self.student_id = student_id
+
+    def study(self):
+        print(f"{self.name} (ID: {self.student_id}) is studying.")
+
+
+class University:
+    def __init__(self):
+        self.employees = []
+        self.students = []
+
+    def add_employee(self, employee):
+        self.employees.append(employee)
+
+    def add_student(self, student):
+        self.students.append(student)
+
+    def remove_employee(self, name):
+        self.employees = [emp for emp in self.employees if emp.name != name]
+
+    def remove_student(self, student_id):
+        self.students = [stu for stu in self.students if stu.student_id != student_id]
+
+    def find_by_name(self, name):
+        results = []
+        for emp in self.employees:
+            if emp.name == name:
+                results.append(emp)
+        for stu in self.students:
+            if stu.name == name:
+                results.append(stu)
+        return results
+
+    def find_by_id(self, student_id):
+        for stu in self.students:
+            if stu.student_id == student_id:
+                return stu
+        return None
+
+    def show_info(self):
+        print("Employees:")
+        for emp in self.employees:
+            emp.introduce()
+            emp.work()
+        print("\nStudents:")
+        for stu in self.students:
+            stu.introduce()
+            stu.study()
+
+
+university = University()
+
+employee1 = Employee("John Doe", 30, "Professor")
+employee2 = Employee("Jane Smith", 45, "Dean")
+student1 = Student("Alice Brown", 20, "S12345")
+student2 = Student("Bob Johnson", 22, "S67890")
+
+university.add_employee(employee1)
+university.add_employee(employee2)
+university.add_student(student1)
+university.add_student(student2)
+
+university.show_info()
+
+university.remove_employee("John Doe")
+university.remove_student("S67890")
+
+print("\nAfter removal:")
+university.show_info()
+
+print("\nSearch results:")
+found_by_name = university.find_by_name("Jane Smith")
+for person in found_by_name:
+    person.introduce()
+
+found_by_id = university.find_by_id("S12345")
+if found_by_id:
+    found_by_id.introduce()
